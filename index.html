@@ -2,8 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
   <link rel="icon"  href="123.png">
-
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>فورم متعدد الصفحات</title>
@@ -46,9 +44,12 @@
 
     label { display:block; margin-bottom:6px; font-weight:700; }
     input, textarea, select {
-      width:100%; padding:10px; margin-bottom:12px; border-radius:10px; border:none; background:#f1faff; outline:none; box-sizing: border-box; transition:.2s;
+      width:100%; padding:10px; margin-bottom:12px; border-radius:10px; border:none; background:#f1faff;
+      outline:none; box-sizing: border-box; transition:.2s;
     }
-    input:focus, textarea:focus, select:focus { box-shadow:0 0 10px #9fe7ff; transform:translateY(-2px); }
+    input:focus, textarea:focus, select:focus { 
+      box-shadow:0 0 10px #9fe7ff; transform:translateY(-2px); 
+    }
 
     .btn-row { display:flex; gap:10px; }
     .btn { flex:1; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
@@ -67,6 +68,25 @@
       border: 3px solid #0288d1;
       background: #fff;
     }
+
+    /* شاشة التحميل */
+    #loading {
+      display:none;
+      text-align:center;
+      padding:20px;
+      font-weight:700;
+      color:#0288d1;
+      font-size:18px;
+    }
+    #error, #success {
+      display:none;
+      text-align:center;
+      padding:20px;
+      font-weight:700;
+      font-size:18px;
+    }
+    #success { color: green; }
+    #error { color: red; }
   </style>
 </head>
 <body>
@@ -84,11 +104,18 @@
       <div class="step-dot" data-step="2"></div>
     </div>
 
+    <!-- شاشة تحميل -->
+    <div id="loading">جاري إرسال البيانات…</div>
+
+    <!-- رسائل -->
+    <div id="success">تم حفظ البيانات بنجاح ❤️</div>
+    <div id="error">حدث خطأ أثناء الإرسال!</div>
+
     <form id="multiForm">
 
       <div class="form-step active" data-step="0">
         <p style="font-size:14px; line-height:1.6; background:#e8f7ff; padding:10px; border-radius:10px; margin-bottom:18px;">
- لا تنتظر الفرصة، اصنعها.
+          لا تنتظر الفرصة، اصنعها.
         </p>
 
         <label>الاسم</label> 
@@ -150,10 +177,6 @@
 
     </form>
 
-    <p id="thanks" class="hidden" style="text-align:center; margin-top:10px; font-weight:700; color:#0277bd;">
-      تم تسجيل بياناتك بنجاح ❤️
-    </p>
-
     <button id="againBtn" class="btn primary hidden" style="margin-top: 10px;">
       تسجيل رد تاني؟
     </button>
@@ -177,7 +200,7 @@
     document.getElementById('back2').addEventListener('click', ()=> showStep(1));
 
     // --------------------------
-    //  إرسال البيانات لـ Google Sheets
+    //  إرسال البيانات لـ Google Sheets + تسريع الواجهة
     // --------------------------
 
     document.getElementById('multiForm').addEventListener('submit', async function(e){
@@ -197,8 +220,11 @@
         friendPhone: document.getElementById('friendPhone').value
       };
 
-      // ⚠️ حط لينك الـ Web App هنا
       const scriptURL = "https://script.google.com/macros/s/AKfycbzHL1Li3whxUuHCucb0xb7r8_uKDDJFksqy57zpc_K6WQx1wvIrdXhIKAWLCDNNEF4T/exec";
+
+      // إخفاء الفورم وإظهار التحميل فورًا (بدون انتظار)
+      document.getElementById("multiForm").style.display = "none";
+      document.getElementById("loading").style.display = "block";
 
       try {
         await fetch(scriptURL, {
@@ -208,11 +234,14 @@
           body: JSON.stringify(data)
         });
 
-        document.getElementById('thanks').classList.remove('hidden');
-        document.getElementById('againBtn').classList.remove('hidden');
+        // إظهار رسالة النجاح
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("success").style.display = "block";
+        document.getElementById("againBtn").classList.remove("hidden");
 
       } catch (err) {
-        alert("حصل خطأ أثناء إرسال البيانات!");
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("error").style.display = "block";
         console.error(err);
       }
     });
@@ -220,7 +249,9 @@
     // زرار تسجيل رد تاني
     document.getElementById('againBtn').addEventListener('click', () => {
       document.getElementById('multiForm').reset();
-      document.getElementById('thanks').classList.add('hidden');
+      document.getElementById('success').style.display = "none";
+      document.getElementById('error').style.display = "none";
+      document.getElementById('multiForm').style.display = "block";
       document.getElementById('againBtn').classList.add('hidden');
       showStep(0);
     });
@@ -237,4 +268,3 @@
 
 </body>
 </html>
-
