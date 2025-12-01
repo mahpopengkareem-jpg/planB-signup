@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <link rel="icon"  href="123.png">
+
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>فورم متعدد الصفحات</title>
+  <style>
+    body {
+      background-image: url('plan b cover.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: "Cairo", sans-serif;
+    }
+
+    .form-shell {
+      position: relative;
+      width: 420px;
+      border-radius: 20px;
+      padding: 40px 30px 30px 30px; 
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    h2 { margin-bottom: 10px; color: #0277bd; }
+    p.subtitle { margin-top: 0; margin-bottom: 18px; font-weight:600; color: #05668d; }
+
+    .steps-indicator { display:flex; gap:8px; justify-content:center; margin-bottom:18px; }
+    .step-dot { width:12px; height:12px; border-radius:50%; background:#cfeffb; transition:.25s; }
+    .step-dot.active { background:#0288d1; transform:scale(1.4); }
+
+    .form-step { display:none; animation: stepIn .45s ease; }
+    .form-step.active { display:block; }
+    @keyframes stepIn { from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);} }
+
+    label { display:block; margin-bottom:6px; font-weight:700; }
+    input, textarea, select {
+      width:100%; padding:10px; margin-bottom:12px; border-radius:10px; border:none; background:#f1faff; outline:none; box-sizing: border-box; transition:.2s;
+    }
+    input:focus, textarea:focus, select:focus { box-shadow:0 0 10px #9fe7ff; transform:translateY(-2px); }
+
+    .btn-row { display:flex; gap:10px; }
+    .btn { flex:1; padding:12px; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
+    .btn.primary { background:#0288d1; color:#fff; }
+    .btn.ghost { background:transparent; border:2px solid #0288d1; color:#0288d1; }
+
+    .hidden { display:none; }
+
+    .form-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 3px solid #0288d1;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-shell">
+
+    <img src="CUTD2.png" alt="form image" class="form-image" />
+
+    <h2>فورم التسجيل</h2>
+    <p class="subtitle">برجاء ملء البيانات بدقة</p>
+
+    <div class="steps-indicator">
+      <div class="step-dot active" data-step="0"></div>
+      <div class="step-dot" data-step="1"></div>
+      <div class="step-dot" data-step="2"></div>
+    </div>
+
+    <form id="multiForm">
+
+      <div class="form-step active" data-step="0">
+        <p style="font-size:14px; line-height:1.6; background:#e8f7ff; padding:10px; border-radius:10px; margin-bottom:18px;">
+ لا تنتظر الفرصة، اصنعها.
+        </p>
+
+        <label>الاسم</label> 
+        <input type="text" id="name" placeholder="اكتب اسمك هنا" required />
+
+        <label>رقم الموبايل</label>
+        <input type="text" id="phone" placeholder="رقم الموبايل" required />
+
+        <label>المحافظة</label>
+        <input type="text" id="city" placeholder="اكتب محافظتك" />
+
+        <label>السن</label>
+        <input type="number" id="age" placeholder="سنك" />
+
+        <label>المؤهل الدراسي</label>
+        <input type="text" id="degree" placeholder="مؤهلك الدراسي" />
+
+        <div class="btn-row">
+          <button type="button" class="btn primary" id="next1">التالي</button>
+        </div>
+      </div>
+
+      <div class="form-step" data-step="1">
+        <label>المجال أو التراك اللي أنت مهتم تدخل فيه</label>
+        <input type="text" id="track" placeholder="مثال: جرافيك – برمجة – سوشيال…" />
+
+        <div class="btn-row">
+          <button type="button" class="btn ghost" id="back1">رجوع</button>
+          <button type="button" class="btn primary" id="next2">التالي</button>
+        </div>
+      </div>
+
+      <div class="form-step" data-step="2">
+        <label>هل اخترت التراك لمشروع معين؟</label>
+        <select id="goal">
+          <option>علشان يساعدني في مشروع</option>
+          <option>عايز أبدأ مجال جديد</option>
+          <option>لسه مش قادر أحدد</option>
+        </select>
+
+        <label>مين رشح لك بلان بي؟</label>
+        <input type="text" id="ref" placeholder="اسم الشخص (لو فيه)" />
+
+        <label>تحب الميتنج يكون ازاي؟</label>
+        <select id="meeting">
+          <option>أونلاين</option>
+          <option>أوفلاين (في المنصورة)</option>
+        </select>
+
+        <label>ترشيح صديق (اختياري)</label>
+        <input type="text" id="friendName" placeholder="اسم الصديق" />
+        <input type="text" id="friendPhone" placeholder="رقم الصديق" />
+
+        <div class="btn-row">
+          <button type="button" class="btn ghost" id="back2">رجوع</button>
+          <button type="submit" class="btn primary" id="submitBtn">إرسال</button>
+        </div>
+      </div>
+
+    </form>
+
+    <p id="thanks" class="hidden" style="text-align:center; margin-top:10px; font-weight:700; color:#0277bd;">
+      تم تسجيل بياناتك بنجاح ❤️
+    </p>
+
+    <button id="againBtn" class="btn primary hidden" style="margin-top: 10px;">
+      تسجيل رد تاني؟
+    </button>
+
+  </div>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const dots = Array.from(document.querySelectorAll('.step-dot'));
+    let current = 0;
+
+    function showStep(index){
+      steps.forEach((s,i)=> s.classList.toggle('active', i===index));
+      dots.forEach((d,i)=> d.classList.toggle('active', i===index));
+      current = index;
+    }
+
+    document.getElementById('next1').addEventListener('click', ()=> showStep(1));
+    document.getElementById('back1').addEventListener('click', ()=> showStep(0));
+    document.getElementById('next2').addEventListener('click', ()=> showStep(2));
+    document.getElementById('back2').addEventListener('click', ()=> showStep(1));
+
+    // --------------------------
+    //  إرسال البيانات لـ Google Sheets
+    // --------------------------
+
+    document.getElementById('multiForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        city: document.getElementById('city').value,
+        age: document.getElementById('age').value,
+        degree: document.getElementById('degree').value,
+        track: document.getElementById('track').value,
+        goal: document.getElementById('goal').value,
+        ref: document.getElementById('ref').value,
+        meeting: document.getElementById('meeting').value,
+        friendName: document.getElementById('friendName').value,
+        friendPhone: document.getElementById('friendPhone').value
+      };
+
+      // ⚠️ حط لينك الـ Web App هنا
+      const scriptURL = "https://script.google.com/macros/s/AKfycbwZtpYoYl_GbJUtZcbIeNJ33EKqQRhhcWZbb8xiELYKoub_yfP3ITrAsiBp-yMmgecM/exec";
+
+      try {
+        await fetch(scriptURL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        document.getElementById('thanks').classList.remove('hidden');
+        document.getElementById('againBtn').classList.remove('hidden');
+
+      } catch (err) {
+        alert("حصل خطأ أثناء إرسال البيانات!");
+        console.error(err);
+      }
+    });
+
+    // زرار تسجيل رد تاني
+    document.getElementById('againBtn').addEventListener('click', () => {
+      document.getElementById('multiForm').reset();
+      document.getElementById('thanks').classList.add('hidden');
+      document.getElementById('againBtn').classList.add('hidden');
+      showStep(0);
+    });
+
+    // منع Enter قبل آخر صفحة
+    document.getElementById("multiForm").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        if (current !== steps.length - 1) {
+          e.preventDefault();
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
