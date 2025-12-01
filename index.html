@@ -17,6 +17,7 @@
       min-height: 100vh;
       margin: 0;
       font-family: "Cairo", sans-serif;
+      padding: 0;
     }
 
     .form-shell {
@@ -69,7 +70,6 @@
       background: #fff;
     }
 
-    /* شاشة التحميل */
     #loading {
       display:none;
       text-align:center;
@@ -87,8 +87,37 @@
     }
     #success { color: green; }
     #error { color: red; }
+
+    /* -----------------------------
+       🚀 تحسين شكل الكونتينر في الموبايل
+    ------------------------------ */
+    @media (max-width: 480px) {
+      .form-shell {
+        width: 85% !important;
+        padding: 30px 20px 25px 20px;
+        margin: 20px auto;
+      }
+
+      body {
+        padding: 10px;
+      }
+
+      .form-image {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+    /* تابلت */
+    @media (max-width: 768px) {
+      .form-shell {
+        width: 70%;
+      }
+    }
+
   </style>
 </head>
+
 <body>
 
   <div class="form-shell">
@@ -104,10 +133,8 @@
       <div class="step-dot" data-step="2"></div>
     </div>
 
-    <!-- شاشة تحميل -->
     <div id="loading">جاري إرسال البيانات…</div>
 
-    <!-- رسائل -->
     <div id="success">تم حفظ البيانات بنجاح ❤️</div>
     <div id="error">حدث خطأ أثناء الإرسال!</div>
 
@@ -199,10 +226,6 @@
     document.getElementById('next2').addEventListener('click', ()=> showStep(2));
     document.getElementById('back2').addEventListener('click', ()=> showStep(1));
 
-    // --------------------------
-    //  إرسال البيانات لـ Google Sheets + تسريع الواجهة
-    // --------------------------
-
     document.getElementById('multiForm').addEventListener('submit', async function(e){
       e.preventDefault();
 
@@ -222,7 +245,6 @@
 
       const scriptURL = "https://script.google.com/macros/s/AKfycbzHL1Li3whxUuHCucb0xb7r8_uKDDJFksqy57zpc_K6WQx1wvIrdXhIKAWLCDNNEF4T/exec";
 
-      // إخفاء الفورم وإظهار التحميل فورًا (بدون انتظار)
       document.getElementById("multiForm").style.display = "none";
       document.getElementById("loading").style.display = "block";
 
@@ -234,7 +256,6 @@
           body: JSON.stringify(data)
         });
 
-        // إظهار رسالة النجاح
         document.getElementById("loading").style.display = "none";
         document.getElementById("success").style.display = "block";
         document.getElementById("againBtn").classList.remove("hidden");
@@ -246,7 +267,6 @@
       }
     });
 
-    // زرار تسجيل رد تاني
     document.getElementById('againBtn').addEventListener('click', () => {
       document.getElementById('multiForm').reset();
       document.getElementById('success').style.display = "none";
@@ -256,7 +276,6 @@
       showStep(0);
     });
 
-    // منع Enter قبل آخر صفحة
     document.getElementById("multiForm").addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         if (current !== steps.length - 1) {
@@ -264,6 +283,7 @@
         }
       }
     });
+
   </script>
 
 </body>
